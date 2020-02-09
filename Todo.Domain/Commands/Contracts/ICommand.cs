@@ -2,7 +2,7 @@ using Flunt.Validations;
 
 namespace Todo.Domain.Commands.Contracts
 {
-    public interface ICommand: IValidatable
+    public interface ICommand : IValidatable
     {
     }
 }
