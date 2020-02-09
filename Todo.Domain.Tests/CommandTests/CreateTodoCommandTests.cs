@@ -7,20 +7,21 @@ namespace Todo.Domain.Tests.CommandTests
     [TestClass]
     public class CreateTodoCommandTests
     {
+        private readonly CreateTodoCommand _invalidCommand = new CreateTodoCommand("", "", DateTime.Now);
+        private readonly CreateTodoCommand _validCommand = new CreateTodoCommand("Titulo da Tarefa", "Usuário Padrão", DateTime.Now);
+
         [TestMethod]
         public void Dado_um_comando_invalido()
         {
-            var command = new CreateTodoCommand("", "", DateTime.Now);
-            command.Validate();
-            Assert.AreEqual(command.Valid, false);
+            _invalidCommand.Validate();
+            Assert.AreEqual(_invalidCommand.Valid, false);
         }
 
         [TestMethod]
         public void Dado_um_comando_valido()
         {
-            var command = new CreateTodoCommand("Titulo da Tarefa", "Wanderson", DateTime.Now);
-            command.Validate();
-            Assert.AreEqual(command.Valid, true);
+            _validCommand.Validate();
+            Assert.AreEqual(_validCommand.Valid, true);
         }
     }
 }
