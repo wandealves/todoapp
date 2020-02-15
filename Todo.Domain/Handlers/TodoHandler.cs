@@ -7,7 +7,10 @@ using Todo.Domain.Repositories;
 
 namespace Todo.Domain.Handlers
 {
-    public class TodoHandler : Notifiable, IHandler<CreateTodoCommand>
+    public class TodoHandler :
+    Notifiable,
+    IHandler<CreateTodoCommand>,
+    IHandler<UpdateTodoCommand>
     {
         private readonly ITodoRepository _repository;
 
@@ -26,6 +29,20 @@ namespace Todo.Domain.Handlers
             var todo = new TodoItem(command.Title, command.User, command.Date);
 
             _repository.Create(todo);
+
+            return new GenericCommandResult(true, "Tarefa salva", todo);
+        }
+
+        public ICommandResult Handle(UpdateTodoCommand command)
+        {
+            if (command.Invalid)
+                return new GenericCommandResult(false, "Ops, parece que sua tarefa está errada!", command.Notifications);
+
+            var todo = _repository.GetById(command.Id, command.User);
+
+            todo.UpdateTitle(command.Title);
+
+            _repository.Update(todo);
 
             return new GenericCommandResult(true, "Tarefa salva", todo);
         }
